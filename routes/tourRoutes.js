@@ -1,7 +1,9 @@
 import { TOURS_URL } from '../helpers.js';
 import express from 'express';
 import {
-  addTour, checkId,
+  addTour,
+  checkBody,
+  checkId,
   deleteTour,
   getAllTours,
   getOneTour,
@@ -15,7 +17,7 @@ tourRouter.param('id', checkId)
 tourRouter
   .route(`/`)
   .get(getAllTours)
-  .post(addTour);
+  .post(checkBody, addTour);
 
 tourRouter
   .route(`${TOURS_URL.id}`)

@@ -8,8 +8,12 @@ import { userRouter } from './routes/userRoutes.js';
 export const app = express();
 
 // 1 middlewares
-app.use(morgan('dev'))
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
+app.use(express.static('./public'));
 
 app.use((req, res, next) => {
   console.log('Hello from the middleware');
@@ -19,7 +23,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
-})
+});
 
 // 3 routes
 app.use(`${TOURS_URL.tours}`, tourRouter);

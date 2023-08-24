@@ -16,6 +16,16 @@ export const checkId = (req, res, next, val) => {
   next();
 }
 
+export const checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    res.status(400).json({
+      status: 'failed',
+      message: 'Missing name or price'
+    })
+  }
+  next();
+};
+
 export const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
