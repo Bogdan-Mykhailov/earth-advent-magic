@@ -1,19 +1,19 @@
-import express from 'express';
+import Router from 'express';
 import { TOURS_URL } from '../helpers.js';
 import {
-  addUser,
+  createUser,
   deleteUser,
   getAllUsers,
   getOneUser,
   updateUser
-} from '../controllers/userController.js';
+} from '../controllers/User.js';
 
-export const userRouter = express.Router();
+export const userRouter = Router();
 
 userRouter
   .route('/')
   .get(getAllUsers)
-  .post(addUser);
+  .post(createUser);
 
 userRouter
   .route(`${TOURS_URL.id}`)

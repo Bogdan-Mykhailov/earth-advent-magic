@@ -4,7 +4,7 @@ export const getAllUsers = (req, res) => {
     message: 'This route is not yet defined!'
   })
 };
-export const addUser = (req, res) => {
+export const createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'This route is not yet defined!'

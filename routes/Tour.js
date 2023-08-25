@@ -1,23 +1,19 @@
 import { TOURS_URL } from '../helpers.js';
-import express from 'express';
+import Router from 'express';
 import {
-  addTour,
-  checkBody,
-  checkId,
+  createTour,
   deleteTour,
   getAllTours,
   getOneTour,
   updateTour
-} from '../controllers/tourController.js';
+} from '../controllers/Tour.js';
 
-export const tourRouter = express.Router();
-
-tourRouter.param('id', checkId)
+export const tourRouter = Router();
 
 tourRouter
   .route(`/`)
   .get(getAllTours)
-  .post(checkBody, addTour);
+  .post(createTour);
 
 tourRouter
   .route(`${TOURS_URL.id}`)
