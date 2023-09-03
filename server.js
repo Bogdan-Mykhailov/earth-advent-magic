@@ -14,7 +14,7 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true
-  }).then(() => console.log('DB - connection successful!'));
+  }).then(() => console.log('DB connection successful!'));
 
 const PORT = process.env.PORT || 8000;
 
