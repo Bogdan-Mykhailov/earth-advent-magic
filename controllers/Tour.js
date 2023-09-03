@@ -48,6 +48,7 @@ export const getAllTours = async (req, res) => {
     });
   }
 };
+
 export const getOneTour = async (req, res) => {
   try {
     const tour = await Tour.findById(req.params.id);
@@ -65,6 +66,7 @@ export const getOneTour = async (req, res) => {
     });
   }
 };
+
 export const createTour = async (req, res) => {
   try {
     const newTour = await Tour.create(req.body);
@@ -82,6 +84,7 @@ export const createTour = async (req, res) => {
     });
   }
 };
+
 export const updateTour = async (req, res) => {
   try {
     const updatedTour = await Tour.findByIdAndUpdate(
@@ -106,6 +109,7 @@ export const updateTour = async (req, res) => {
     });
   }
 };
+
 export const deleteTour = async (req, res) => {
 try {
   await Tour.findOneAndDelete(req.params.id)
