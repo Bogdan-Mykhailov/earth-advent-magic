@@ -4,6 +4,7 @@ import { Tour } from '../models/Tour.js';
 export const getAllTours = async (req, res) => {
   try {
     // build query
+
     // 1a. filtering
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
@@ -30,6 +31,20 @@ export const getAllTours = async (req, res) => {
       query = query.select(fields);
     } else {
       query = query.select('-__v')
+    }
+
+    // 4. pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = ( page - 1 ) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numberOfTours = await Tour.countDocuments();
+      if (skip >= numberOfTours) {
+        throw new Error('This page does not exist')
+      }
     }
 
     // execute query
