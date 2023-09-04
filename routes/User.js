@@ -1,5 +1,6 @@
+'use strict';
 import Router from 'express';
-import { TOURS_URL } from '../helpers.js';
+import { TOURS_URL } from '../utils/constants.js';
 import {
   createUser,
   deleteUser,

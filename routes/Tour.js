@@ -1,6 +1,8 @@
-import { TOURS_URL } from '../helpers.js';
+'use strict';
+import { TOURS_URL } from '../utils/constants.js';
 import Router from 'express';
 import {
+  aliasTopTours,
   createTour,
   deleteTour,
   getAllTours,
@@ -9,6 +11,10 @@ import {
 } from '../controllers/Tour.js';
 
 export const tourRouter = Router();
+
+tourRouter
+  .route(TOURS_URL.topFiveCheap)
+  .get(aliasTopTours, getAllTours)
 
 tourRouter
   .route(`/`)

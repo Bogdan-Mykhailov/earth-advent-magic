@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { TOURS_URL } from './helpers.js';
+import { TOURS_URL } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
 
