@@ -6,7 +6,9 @@ import {
   createTour,
   deleteTour,
   getAllTours,
+  getMonthlyPlan,
   getOneTour,
+  getTourStats,
   updateTour
 } from '../controllers/Tour.js';
 
@@ -15,6 +17,14 @@ export const tourRouter = Router();
 tourRouter
   .route(TOURS_URL.topFiveCheap)
   .get(aliasTopTours, getAllTours)
+
+tourRouter
+  .route(TOURS_URL.tourStats)
+  .get(getTourStats)
+
+tourRouter
+  .route(`${TOURS_URL.monthlyPlan}${TOURS_URL.year}`)
+  .get(getMonthlyPlan)
 
 tourRouter
   .route(`/`)
