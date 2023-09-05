@@ -9,7 +9,12 @@ const tourSchema = new mongoose.Schema({
     unique: true,
     trim: true,
     maxLength: [40, 'A tour name must have less or equal then 40 characters'],
-    minLength: [10, 'A tour name must have more or equal then 10 characters']
+    minLength: [10, 'A tour name must have more or equal then 10 characters'],
+    // have some (bug with spaces) isAlpha === only characters
+    // validate: [
+    //   validator.isAlpha,
+    //   'Tour name must only contain characters'
+    // ]
   },
   slug: String,
   duration: {
@@ -26,7 +31,7 @@ const tourSchema = new mongoose.Schema({
     enum: {
       values: ['easy', 'medium', 'difficult'],
       message: 'Difficulty is either: easy, medium and difficult'
-}
+    }
   },
   ratingsAverage: {
     type: Number,
@@ -42,7 +47,16 @@ const tourSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A tour must have a price']
   },
-  priceDiscount: Number,
+  priceDiscount: {
+    type: Number,
+    validate: {
+      validator: function(val) {
+        // this only points to current doc on NEW document creation
+        return val < this.price;
+      },
+      message: 'Discount price ({VALUE}) should be below regular price'
+    }
+  },
   summary: {
     type: String,
     required: [true, 'A tour must have a summary'],
@@ -94,15 +108,15 @@ tourSchema.pre(/^find/, function(next) {
 tourSchema.post(/^find/, function(docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
   next();
-})
+});
 
 // aggregation middleware
 tourSchema.pre('aggregate', function(next) {
   this.pipeline().unshift({
     $match: { secretTour: { $ne: true } }
-  })
+  });
   console.log(this);
   next();
-})
+});
 
 export const Tour = mongoose.model('Tour', tourSchema);
