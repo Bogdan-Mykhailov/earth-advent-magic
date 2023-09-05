@@ -1,9 +1,11 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { PUBLIC_PATH, STATUSES, TOURS_URL } from './utils/constants.js';
+import { PUBLIC_PATH, TOURS_URL } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
+import { AppError } from './utils/error.js';
+import { globalErrorHandler } from './controllers/Error.js';
 
 export const app = express();
 
@@ -25,9 +27,10 @@ app.use(`${TOURS_URL.tours}`, tourRouter);
 app.use(`${TOURS_URL.users}`, userRouter);
 
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: STATUSES.FAILED,
-    message: `Cant find ${req.originalUrl} on this server!`
-  })
-  next();
-})
+  next(new AppError(
+    `Cant find ${req.originalUrl} on this server!`,
+    404
+  ));
+});
+
+app.use(globalErrorHandler);

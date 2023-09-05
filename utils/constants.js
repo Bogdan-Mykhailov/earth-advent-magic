@@ -1,3 +1,4 @@
+'use strict';
 export const TOURS_URL = {
   tours: '/api/v1/tours',
   users: '/api/v1/users',
@@ -13,4 +14,5 @@ export const PUBLIC_PATH = './public'
 export const STATUSES = {
   FAILED: 'failed',
   SUCCESS: 'success',
+  ERROR: 'error',
 }
