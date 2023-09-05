@@ -1,6 +1,7 @@
 'use strict';
 import { Tour } from '../models/Tour.js';
 import { APIFeatures } from '../utils/api-features.js';
+import { STATUSES } from '../utils/constants.js';
 
 export const aliasTopTours = async (req, res, next) => {
   req.query.limit = '5';
@@ -22,13 +23,13 @@ export const getAllTours = async (req, res) => {
 
     // send response
     res.status(200).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       results: tours.length,
       data: { tours }
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -39,14 +40,14 @@ export const getOneTour = async (req, res) => {
     const tour = await Tour.findById(req.params.id);
 
     res.status(200).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: {
         tours: tour
       }
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -57,14 +58,14 @@ export const createTour = async (req, res) => {
     const newTour = await Tour.create(req.body);
 
     res.status(201).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: {
         tour: newTour
       }
     });
   } catch (err) {
     res.status(400).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -82,14 +83,14 @@ export const updateTour = async (req, res) => {
     );
 
     res.status(200).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: {
         tour: updatedTour
       }
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -100,12 +101,12 @@ export const deleteTour = async (req, res) => {
     await Tour.findOneAndDelete(req.params.id);
 
     res.status(204).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: null
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -144,14 +145,14 @@ export const getTourStats = async (req, res) => {
     ]);
 
     res.status(200).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: {
         stats
       }
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }
@@ -185,14 +186,14 @@ export const getMonthlyPlan = async (req, res) => {
     ]);
 
     res.status(200).json({
-      status: 'success',
+      status: STATUSES.SUCCESS,
       data: {
         plan
       }
     });
   } catch (err) {
     res.status(404).json({
-      status: 'failed',
+      status: STATUSES.FAILED,
       message: err
     });
   }

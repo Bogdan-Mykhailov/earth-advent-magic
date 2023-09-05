@@ -7,3 +7,10 @@ export const TOURS_URL = {
   id: '/:id',
   year: '/:year',
 };
+
+export const PUBLIC_PATH = './public'
+
+export const STATUSES = {
+  FAILED: 'failed',
+  SUCCESS: 'success',
+}
