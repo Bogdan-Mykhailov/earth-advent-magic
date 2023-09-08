@@ -11,6 +11,7 @@ import {
   getTourStats,
   updateTour
 } from '../controllers/Tour.js';
+import { protect } from '../controllers/Auth.js';
 
 export const tourRouter = Router();
 
@@ -28,7 +29,7 @@ tourRouter
 
 tourRouter
   .route(`/`)
-  .get(getAllTours)
+  .get(protect, getAllTours)
   .post(createTour);
 
 tourRouter
