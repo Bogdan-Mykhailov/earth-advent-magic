@@ -11,7 +11,7 @@ import {
   getTourStats,
   updateTour
 } from '../controllers/Tour.js';
-import { protect } from '../controllers/Auth.js';
+import { protect, restrictTo } from '../controllers/Auth.js';
 
 export const tourRouter = Router();
 
@@ -36,4 +36,4 @@ tourRouter
   .route(`${TOURS_URL.id}`)
   .get(getOneTour)
   .patch(updateTour)
-  .delete(deleteTour);
+  .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
