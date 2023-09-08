@@ -4,6 +4,7 @@ export const TOURS_URL = {
   users: '/api/v1/users',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
+  signup: '/signup',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',

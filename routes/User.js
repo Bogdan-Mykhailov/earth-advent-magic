@@ -8,8 +8,13 @@ import {
   getOneUser,
   updateUser
 } from '../controllers/User.js';
+import {
+  signup
+} from '../controllers/Auth.js';
 
 export const userRouter = Router();
+
+userRouter.post(`${TOURS_URL.signup}`, signup)
 
 userRouter
   .route('/')
