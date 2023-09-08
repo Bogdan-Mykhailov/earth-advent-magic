@@ -9,12 +9,14 @@ import {
   updateUser
 } from '../controllers/User.js';
 import {
+  login,
   signup
 } from '../controllers/Auth.js';
 
 export const userRouter = Router();
 
 userRouter.post(`${TOURS_URL.signup}`, signup)
+userRouter.post(`${TOURS_URL.login}`, login)
 
 userRouter
   .route('/')

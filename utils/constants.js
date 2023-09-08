@@ -1,10 +1,14 @@
 'use strict';
+import { login } from '../controllers/Auth.js';
+import jwt from 'jsonwebtoken';
+
 export const TOURS_URL = {
   tours: '/api/v1/tours',
   users: '/api/v1/users',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
   signup: '/signup',
+  login: '/login',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',
@@ -48,3 +52,12 @@ export const sendErrorProd = (err, res) => {
     });
   }
 };
+
+export const signToken = (id) => {
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+};
+

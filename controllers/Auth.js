@@ -1,8 +1,8 @@
 'use strict';
 import { User } from '../models/User.js';
-import { STATUSES } from '../utils/constants.js';
+import { signToken, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
-import jwt from 'jsonwebtoken';
+import { AppError } from '../utils/error.js';
 
 export const signup = catchAsync(async (req, res, next) => {
   // for secure reason I need only that fields, so now nobody can't change role to admin for user
@@ -14,11 +14,7 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  const token = jwt.sign(
-    { id: newUser._id },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
+  const token = signToken(newUser._id);
 
   res.status(201).json({
     status: STATUSES.SUCCESS,
@@ -29,4 +25,25 @@ export const signup = catchAsync(async (req, res, next) => {
   });
 });
 
+export const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
 
+  // check if email & pass is exist
+  if (!email || !password) {
+    const message = 'Please provide your email and password.';
+    return next(new AppError(message, 400));
+  }
+  // check if user exists & pass is correct
+  const user = await User.findOne({ email }).select('+password');
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    const message = 'Please provide correct email or password';
+    return next(new AppError(message, 401));
+  }
+  // if everything is ok, send token to client
+  const token = signToken(user._id);
+  res.status(200).json({
+    status: STATUSES.SUCCESS,
+    token
+  });
+});
