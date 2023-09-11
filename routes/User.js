@@ -6,6 +6,7 @@ import {
   deleteUser,
   getAllUsers,
   getOneUser,
+  updateMe,
   updateUser
 } from '../controllers/User.js';
 import {
@@ -24,6 +25,7 @@ userRouter.post(`${TOURS_URL.forgotPassword}`, forgotPassword);
 userRouter.patch(`${TOURS_URL.resetPassword}${TOURS_URL.token}`, resetPassword);
 
 userRouter.patch(`${TOURS_URL.updateMyPassword}`, protect, updatePassword);
+userRouter.patch(`${TOURS_URL.updateMe}`, protect, updateMe);
 
 userRouter
   .route('/')

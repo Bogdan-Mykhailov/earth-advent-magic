@@ -12,6 +12,7 @@ export const TOURS_URL = {
   forgotPassword: '/forgotPassword',
   resetPassword: '/resetPassword',
   updateMyPassword: '/updateMyPassword',
+  updateMe: '/updateMe',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',
@@ -75,4 +76,15 @@ export const createSendToken = (user, statusCode, res) => {
       user
     }
   });
-}
+};
+
+export const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el)) {
+      newObj[el] = obj[el];
+    }
+  })
+
+  return newObj;
+};
