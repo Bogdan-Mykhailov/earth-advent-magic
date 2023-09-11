@@ -39,6 +39,15 @@ export const updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+export const deleteMe = catchAsync(async (req,res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(204).json({
+    status: STATUSES.SUCCESS,
+    data: null
+  });
+});
+
 export const createUser = (req, res) => {
   res.status(500).json({
     status: STATUSES.ERROR,

@@ -1,6 +1,7 @@
 'use strict';
 import { login } from '../controllers/Auth.js';
 import jwt from 'jsonwebtoken';
+import { deleteMe } from '../controllers/User.js';
 
 export const TOURS_URL = {
   tours: '/api/v1/tours',
@@ -13,6 +14,7 @@ export const TOURS_URL = {
   resetPassword: '/resetPassword',
   updateMyPassword: '/updateMyPassword',
   updateMe: '/updateMe',
+  deleteMe: '/deleteMe',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',

@@ -3,6 +3,7 @@ import Router from 'express';
 import { TOURS_URL } from '../utils/constants.js';
 import {
   createUser,
+  deleteMe,
   deleteUser,
   getAllUsers,
   getOneUser,
@@ -26,6 +27,7 @@ userRouter.patch(`${TOURS_URL.resetPassword}${TOURS_URL.token}`, resetPassword);
 
 userRouter.patch(`${TOURS_URL.updateMyPassword}`, protect, updatePassword);
 userRouter.patch(`${TOURS_URL.updateMe}`, protect, updateMe);
+userRouter.delete(`${TOURS_URL.deleteMe}`, protect, deleteMe);
 
 userRouter
   .route('/')
