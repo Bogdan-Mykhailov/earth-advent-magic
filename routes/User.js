@@ -9,7 +9,9 @@ import {
   updateUser
 } from '../controllers/User.js';
 import {
+  forgotPassword,
   login,
+  resetPassword,
   signup
 } from '../controllers/Auth.js';
 
@@ -17,6 +19,9 @@ export const userRouter = Router();
 
 userRouter.post(`${TOURS_URL.signup}`, signup)
 userRouter.post(`${TOURS_URL.login}`, login)
+
+userRouter.post(`${TOURS_URL.forgotPassword}`, forgotPassword)
+userRouter.patch(`${TOURS_URL.resetPassword}${TOURS_URL.token}`, resetPassword)
 
 userRouter
   .route('/')

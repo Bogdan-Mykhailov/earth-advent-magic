@@ -9,9 +9,12 @@ export const TOURS_URL = {
   tourStats: '/tour-stats',
   signup: '/signup',
   login: '/login',
+  forgotPassword: '/forgotPassword',
+  resetPassword: '/resetPassword',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',
+  token: '/:token'
 };
 
 export const PUBLIC_PATH = './public'
