@@ -17,15 +17,15 @@ export const tourRouter = Router();
 
 tourRouter
   .route(TOURS_URL.topFiveCheap)
-  .get(aliasTopTours, getAllTours)
+  .get(aliasTopTours, getAllTours);
 
 tourRouter
   .route(TOURS_URL.tourStats)
-  .get(getTourStats)
+  .get(getTourStats);
 
 tourRouter
   .route(`${TOURS_URL.monthlyPlan}${TOURS_URL.year}`)
-  .get(getMonthlyPlan)
+  .get(getMonthlyPlan);
 
 tourRouter
   .route(`/`)

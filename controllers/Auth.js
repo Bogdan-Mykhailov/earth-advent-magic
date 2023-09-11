@@ -1,6 +1,6 @@
 'use strict';
 import { User } from '../models/User.js';
-import { signToken, STATUSES } from '../utils/constants.js';
+import { createSendToken, signToken, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { promisify } from 'util';
@@ -18,15 +18,7 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  const token = signToken(newUser._id);
-
-  res.status(201).json({
-    status: STATUSES.SUCCESS,
-    token,
-    data: {
-      user: newUser
-    }
-  });
+  createSendToken(newUser, 201, res);
 });
 
 export const login = catchAsync(async (req, res, next) => {
@@ -45,11 +37,7 @@ export const login = catchAsync(async (req, res, next) => {
     return next(new AppError(message, 401));
   }
   // if everything is ok, send token to client
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    token
-  });
+  createSendToken(user, 200, res);
 });
 
 export const protect = catchAsync(async (req, res, next) => {
@@ -154,9 +142,24 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
   // update changedPasswordAt property for the user
   // log the user in, send JWT
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    token
-  });
+  createSendToken(user, 200, res);
+});
+
+export const updatePassword = catchAsync(async (req, res, next) => {
+  // get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+  // check if POSTed current password is correct
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+
+    const message = 'Your current password is wrong.'
+    return next(new AppError(message, 401));
+  }
+  // if so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  // User.findByIdAndUpdate will NOT work as intended!
+
+  // log user in, send JWT
+  createSendToken(user, 200, res);
 });

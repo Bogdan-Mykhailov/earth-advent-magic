@@ -11,6 +11,7 @@ export const TOURS_URL = {
   login: '/login',
   forgotPassword: '/forgotPassword',
   resetPassword: '/resetPassword',
+  updateMyPassword: '/updateMyPassword',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
   year: '/:year',
@@ -64,3 +65,14 @@ export const signToken = (id) => {
   );
 };
 
+export const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.status(statusCode).json({
+    status: STATUSES.SUCCESS,
+    token,
+    data: {
+      user
+    }
+  });
+}
