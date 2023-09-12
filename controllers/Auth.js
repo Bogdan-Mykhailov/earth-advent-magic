@@ -79,7 +79,6 @@ export const restrictTo = (...roles) => {
       const message = 'You do not have permission to perform this action.';
       return next(new AppError(message, 403));
     }
-
     next();
   };
 };

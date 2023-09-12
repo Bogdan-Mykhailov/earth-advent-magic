@@ -19,7 +19,7 @@ mongoose
   }).then(() => console.log('DB connection successful!'));
 
 //read file
-const filePath = path.join('dev-data', 'data', 'tours-simple.json');
+const filePath = path.join('dev-data', 'data', 'tours.json');
 const tours = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
 //import data in to db
