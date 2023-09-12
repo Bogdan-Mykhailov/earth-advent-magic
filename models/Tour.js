@@ -1,7 +1,6 @@
 'use strict';
 import mongoose from 'mongoose';
 import slugify from 'slugify';
-import { User } from './User.js';
 
 const tourSchema = new mongoose.Schema({
   name: {
@@ -105,7 +104,12 @@ const tourSchema = new mongoose.Schema({
       day: Number
     }
   ],
-  guides: Array
+  guides: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }
+  ]
 }, {
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
@@ -122,16 +126,19 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-tourSchema.pre('save', async function(next) {
-  const guidesPromises = this.guides.map(id => User.findById(id).exec());
-  this.guides = await Promise.all(guidesPromises);
-});
-
 // query middleware
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: { $ne: true } });
 
   this.start = Date.now();
+  next();
+});
+
+tourSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt'
+  });
   next();
 });
 
