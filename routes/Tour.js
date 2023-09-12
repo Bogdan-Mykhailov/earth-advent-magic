@@ -28,7 +28,7 @@ tourRouter
   .get(getMonthlyPlan);
 
 tourRouter
-  .route(`/`)
+  .route('/')
   .get(protect, getAllTours)
   .post(createTour);
 

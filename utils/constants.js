@@ -7,6 +7,7 @@ export const TOURS_URL = {
   api: '/api',
   tours: '/api/v1/tours',
   users: '/api/v1/users',
+  reviews: '/api/v1/reviews',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
   signup: '/signup',

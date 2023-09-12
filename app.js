@@ -11,6 +11,7 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import { reviewRouter } from './routes/Review.js';
 
 export const app = express();
 
@@ -66,6 +67,7 @@ app.use((req, res, next) => {
 // 3 routes
 app.use(`${TOURS_URL.tours}`, tourRouter);
 app.use(`${TOURS_URL.users}`, userRouter);
+app.use(`${TOURS_URL.reviews}`, reviewRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(
