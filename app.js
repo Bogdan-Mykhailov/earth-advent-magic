@@ -65,9 +65,9 @@ app.use((req, res, next) => {
 });
 
 // 3 routes
-app.use(`${TOURS_URL.tours}`, tourRouter);
-app.use(`${TOURS_URL.users}`, userRouter);
-app.use(`${TOURS_URL.reviews}`, reviewRouter);
+app.use(`${TOURS_URL.baseUrl}${TOURS_URL.tours}`, tourRouter);
+app.use(`${TOURS_URL.baseUrl}${TOURS_URL.users}`, userRouter);
+app.use(`${TOURS_URL.baseUrl}${TOURS_URL.reviews}`, reviewRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(

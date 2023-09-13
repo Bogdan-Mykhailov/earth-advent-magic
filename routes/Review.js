@@ -1,10 +1,10 @@
 'use strict';
-import Router from 'express';
+import express from 'express';
 import { TOURS_URL } from '../utils/constants.js';
 import { createReview, getAllReviews, getOneReview } from '../controllers/Review.js';
 import { protect, restrictTo } from '../controllers/Auth.js';
 
-export const reviewRouter = Router();
+export const reviewRouter = express.Router({ mergeParams: true });
 
 reviewRouter
   .route('/')

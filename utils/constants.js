@@ -1,13 +1,12 @@
 'use strict';
-import { login } from '../controllers/Auth.js';
 import jwt from 'jsonwebtoken';
-import { deleteMe } from '../controllers/User.js';
 
 export const TOURS_URL = {
   api: '/api',
-  tours: '/api/v1/tours',
-  users: '/api/v1/users',
-  reviews: '/api/v1/reviews',
+  baseUrl: '/api/v1',
+  tours: '/tours',
+  users: '/users',
+  reviews: '/reviews',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
   signup: '/signup',
@@ -19,6 +18,7 @@ export const TOURS_URL = {
   deleteMe: '/deleteMe',
   monthlyPlan: '/monthly-plan',
   id: '/:id',
+  tourId: '/:tourId',
   year: '/:year',
   token: '/:token'
 };

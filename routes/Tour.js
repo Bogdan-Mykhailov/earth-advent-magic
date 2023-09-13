@@ -12,6 +12,7 @@ import {
   updateTour
 } from '../controllers/Tour.js';
 import { protect, restrictTo } from '../controllers/Auth.js';
+import { reviewRouter } from './Review.js';
 
 export const tourRouter = Router();
 
@@ -37,3 +38,10 @@ tourRouter
   .get(getOneTour)
   .patch(updateTour)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
+
+// tourRouter
+//   .route(`${TOURS_URL.tourId}${TOURS_URL.reviews}`)
+//   .post(protect, restrictTo('user'), createReview);
+
+tourRouter
+  .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter)
