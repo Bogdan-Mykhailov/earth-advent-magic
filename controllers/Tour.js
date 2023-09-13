@@ -30,7 +30,7 @@ export const getAllTours = catchAsync(async (req, res, next) => {
 });
 
 export const getOneTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id);
+  const tour = await Tour.findById(req.params.id).populate('reviews');
 
   if (!tour) {
     const message = `No tour found with that ID!`;
@@ -43,7 +43,7 @@ export const getOneTour = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: STATUSES.SUCCESS,
     data: {
-      tours: tour
+      tour
     }
   });
 });
