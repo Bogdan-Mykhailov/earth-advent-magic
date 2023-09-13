@@ -39,9 +39,5 @@ tourRouter
   .patch(updateTour)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
-// tourRouter
-//   .route(`${TOURS_URL.tourId}${TOURS_URL.reviews}`)
-//   .post(protect, restrictTo('user'), createReview);
-
 tourRouter
   .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter)
