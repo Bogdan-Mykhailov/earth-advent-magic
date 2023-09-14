@@ -4,7 +4,7 @@ import { APIFeatures } from '../utils/api-features.js';
 import { STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
-import { deleteOne } from './handlerFactory.js';
+import { createOne, deleteOne, updateOne } from './handlerFactory.js';
 
 export const aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -49,42 +49,8 @@ export const getOneTour = catchAsync(async (req, res, next) => {
   });
 });
 
-export const createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-
-  res.status(201).json({
-    status: STATUSES.SUCCESS,
-    data: {
-      tour: newTour
-    }
-  });
-});
-
-export const updateTour = catchAsync(async (req, res, next) => {
-  const updatedTour = await Tour.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-      runValidators: true
-    }
-  );
-
-  if (!updatedTour) {
-    return next(new AppError(
-      `No tour found with that ID!`,
-      404
-    ));
-  }
-
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    data: {
-      tour: updatedTour
-    }
-  });
-});
-
+export const createTour = createOne(Tour);
+export const updateTour = updateOne(Tour);
 export const deleteTour = deleteOne(Tour);
 
 export const getTourStats = catchAsync(async (req, res, next) => {
