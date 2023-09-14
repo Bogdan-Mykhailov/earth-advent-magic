@@ -3,17 +3,8 @@ import { filterObj, STATUSES } from '../utils/constants.js';
 import { User } from '../models/User.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
-import { deleteOne, updateOne } from './handlerFactory.js';
+import { deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
 
-export const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    results: users.length,
-    data: { users }
-  });
-});
 
 export const updateMe = catchAsync(async (req, res, next) => {
   // create error if user POSTs password data
@@ -52,16 +43,12 @@ export const deleteMe = catchAsync(async (req,res, next) => {
 export const createUser = (req, res) => {
   res.status(500).json({
     status: STATUSES.ERROR,
-    message: 'This route is not yet defined!'
-  });
-};
-export const getOneUser = (req, res) => {
-  res.status(500).json({
-    status: STATUSES.ERROR,
-    message: 'This route is not yet defined!'
+    message: 'This route is not defined! Please use /signup instead'
   });
 };
 
+export const getAllUsers = getAll(User);
+export const getOneUser = getOne(User);
 // do not update password with this
 export const updateUser = updateOne(User);
 export const deleteUser = deleteOne(User);

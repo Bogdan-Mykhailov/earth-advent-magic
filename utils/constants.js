@@ -23,13 +23,14 @@ export const TOURS_URL = {
   token: '/:token'
 };
 
-export const PUBLIC_PATH = './public'
+export const PUBLIC_PATH = './public';
+export const REVIEWS = 'reviews';
 
 export const STATUSES = {
   FAILED: 'failed',
   SUCCESS: 'success',
   ERROR: 'error',
-}
+};
 
 export const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({

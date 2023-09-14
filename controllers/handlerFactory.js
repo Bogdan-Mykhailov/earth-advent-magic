@@ -2,7 +2,7 @@
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { STATUSES } from '../utils/constants.js';
-import { Tour } from '../models/Tour.js';
+import { APIFeatures } from '../utils/api-features.js';
 
 export const deleteOne = (Model) => catchAsync(async (req, res, next) => {
   const doc = await Model.findByIdAndDelete(req.params.id);
@@ -50,6 +50,50 @@ export const createOne = (Model) => catchAsync(async (req, res, next) => {
     status: STATUSES.SUCCESS,
     data: {
       data: doc
+    }
+  });
+});
+
+export const getOne = (Model, populateOptions) => catchAsync(async (req, res, next) => {
+  let query = Model.findById(req.params.id);
+
+  if(populateOptions) {
+    query = query.populate(populateOptions);
+  }
+  const doc = await query;
+
+  if (!doc) {
+    const message = `No document found with that ID!`;
+    return next(new AppError(message, 404));
+  }
+
+  res.status(200).json({
+    status: STATUSES.SUCCESS,
+    data: {
+      data: doc
+    }
+  });
+});
+
+export const getAll = (Model) => catchAsync(async (req, res, next) => {
+  //to allow for nested get reviews on tour
+  let filter = {};
+  if (req.params.tourId) filter = { tour: req.params.tourId };
+
+  // execute query
+  const features = new APIFeatures(Model.find(filter), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const docs = await features.query;
+
+  // send response
+  res.status(200).json({
+    status: STATUSES.SUCCESS,
+    results: docs.length,
+    data: {
+      data: docs
     }
   });
 });

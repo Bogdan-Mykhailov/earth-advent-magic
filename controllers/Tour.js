@@ -1,10 +1,8 @@
 'use strict';
 import { Tour } from '../models/Tour.js';
-import { APIFeatures } from '../utils/api-features.js';
-import { STATUSES } from '../utils/constants.js';
+import { REVIEWS, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
-import { AppError } from '../utils/error.js';
-import { createOne, deleteOne, updateOne } from './handlerFactory.js';
+import { createOne, deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
 
 export const aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -12,46 +10,6 @@ export const aliasTopTours = (req, res, next) => {
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };
-
-export const getAllTours = catchAsync(async (req, res, next) => {
-  // execute query
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
-
-  // send response
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    results: tours.length,
-    data: { tours }
-  });
-});
-
-export const getOneTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-
-  if (!tour) {
-    const message = `No tour found with that ID!`;
-    return next(new AppError(
-      message,
-      404
-    ));
-  }
-
-  res.status(200).json({
-    status: STATUSES.SUCCESS,
-    data: {
-      tour
-    }
-  });
-});
-
-export const createTour = createOne(Tour);
-export const updateTour = updateOne(Tour);
-export const deleteTour = deleteOne(Tour);
 
 export const getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -125,3 +83,9 @@ export const getMonthlyPlan = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+export const getAllTours = getAll(Tour);
+export const getOneTour = getOne(Tour, { path: REVIEWS });
+export const createTour = createOne(Tour);
+export const updateTour = updateOne(Tour);
+export const deleteTour = deleteOne(Tour);
