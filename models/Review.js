@@ -1,5 +1,6 @@
 'use strict';
 import mongoose from 'mongoose';
+import { ROLES } from '../utils/constants.js';
 
 const reviewSchema = new mongoose.Schema({
   review: {
@@ -33,7 +34,7 @@ const reviewSchema = new mongoose.Schema({
 
 reviewSchema.pre(/^find/, function(next) {
   this.populate({
-    path: 'user',
+    path: `${ROLES.user}`,
     select: 'name photo'});
   next();
 });

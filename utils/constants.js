@@ -20,8 +20,16 @@ export const TOURS_URL = {
   id: '/:id',
   tourId: '/:tourId',
   year: '/:year',
-  token: '/:token'
+  token: '/:token',
+  me: '/me'
 };
+
+export const ROLES = {
+  user: 'user',
+  guide: 'guide',
+  leadGuide: 'lead-guide',
+  admin: 'admin'
+}
 
 export const PUBLIC_PATH = './public';
 export const REVIEWS = 'reviews';

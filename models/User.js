@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import { ROLES } from '../utils/constants.js';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -21,8 +22,8 @@ const userSchema = new mongoose.Schema({
   photo: String,
   role: {
     type: String,
-    enum: ['user', 'guide', 'lead-guide', 'admin'],
-    default: 'user'
+    enum: [`${ROLES.admin}`, `${ROLES.leadGuide}`, `${ROLES.guide}`, `${ROLES.user}`],
+    default: `${ROLES.user}`
   },
   password: {
     type: String,

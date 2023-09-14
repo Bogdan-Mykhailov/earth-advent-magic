@@ -5,7 +5,10 @@ import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
 
-
+export const getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+}
 export const updateMe = catchAsync(async (req, res, next) => {
   // create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {

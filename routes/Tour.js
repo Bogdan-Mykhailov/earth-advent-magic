@@ -1,5 +1,5 @@
 'use strict';
-import { TOURS_URL } from '../utils/constants.js';
+import { ROLES, TOURS_URL } from '../utils/constants.js';
 import Router from 'express';
 import {
   aliasTopTours,
@@ -26,18 +26,29 @@ tourRouter
 
 tourRouter
   .route(`${TOURS_URL.monthlyPlan}${TOURS_URL.year}`)
-  .get(getMonthlyPlan);
+  .get(
+    protect,
+    restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`, `${ROLES.guide}`),
+    getMonthlyPlan
+  );
 
 tourRouter
   .route('/')
-  .get(protect, getAllTours)
-  .post(createTour);
+  .get(getAllTours)
+  .post(
+    protect,
+    restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`),
+    createTour
+  );
 
 tourRouter
   .route(`${TOURS_URL.id}`)
   .get(getOneTour)
-  .patch(updateTour)
-  .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
+  .patch(
+    protect,
+    restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`),
+    updateTour)
+  .delete(protect, restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`), deleteTour);
 
 tourRouter
   .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter)
