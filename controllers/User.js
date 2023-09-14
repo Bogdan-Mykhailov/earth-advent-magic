@@ -3,6 +3,7 @@ import { filterObj, STATUSES } from '../utils/constants.js';
 import { User } from '../models/User.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
+import { deleteOne } from './handlerFactory.js';
 
 export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
@@ -66,9 +67,4 @@ export const getOneUser = (req, res) => {
     message: 'This route is not yet defined!'
   });
 };
-export const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: STATUSES.ERROR,
-    message: 'This route is not yet defined!'
-  });
-};
+export const deleteUser = deleteOne(User);

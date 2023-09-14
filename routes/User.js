@@ -1,5 +1,5 @@
 'use strict';
-import Router from 'express';
+import express from 'express';
 import { TOURS_URL } from '../utils/constants.js';
 import {
   createUser,
@@ -14,10 +14,11 @@ import {
   forgotPassword,
   login, protect,
   resetPassword,
-  signup, updatePassword
+  signup,
+  updatePassword
 } from '../controllers/Auth.js';
 
-export const userRouter = Router();
+export const userRouter = express.Router();
 
 userRouter.post(`${TOURS_URL.signup}`, signup);
 userRouter.post(`${TOURS_URL.login}`, login);
