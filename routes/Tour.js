@@ -5,7 +5,7 @@ import {
   aliasTopTours,
   createTour,
   deleteTour,
-  getAllTours,
+  getAllTours, getDistances,
   getMonthlyPlan,
   getOneTour,
   getTourStats,
@@ -37,6 +37,10 @@ tourRouter
   .route(
     `${TOURS_URL.toursWithin}${TOURS_URL.distance}${TOURS_URL.center}${TOURS_URL.latLng}${TOURS_URL.unit}${TOURS_URL.unitType}`)
   .get(getToursWithin);
+
+tourRouter
+  .route(`${TOURS_URL.distances}${TOURS_URL.latLng}${TOURS_URL.unit}${TOURS_URL.unitType}`)
+  .get(getDistances)
 
 tourRouter
   .route('/')

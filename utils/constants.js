@@ -26,6 +26,7 @@ export const TOURS_URL = {
   center: '/center',
   unit: '/unit',
   distance: '/:distance',
+  distances: '/:distances',
   latLng: '/:latlng',
   unitType: '/:unit'
 };
