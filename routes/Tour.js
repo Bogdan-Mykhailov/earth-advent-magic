@@ -9,6 +9,7 @@ import {
   getMonthlyPlan,
   getOneTour,
   getTourStats,
+  getToursWithin,
   updateTour
 } from '../controllers/Tour.js';
 import { protect, restrictTo } from '../controllers/Auth.js';
@@ -33,6 +34,11 @@ tourRouter
   );
 
 tourRouter
+  .route(
+    `${TOURS_URL.toursWithin}${TOURS_URL.distance}${TOURS_URL.center}${TOURS_URL.latLng}${TOURS_URL.unit}${TOURS_URL.unitType}`)
+  .get(getToursWithin);
+
+tourRouter
   .route('/')
   .get(getAllTours)
   .post(
@@ -51,4 +57,4 @@ tourRouter
   .delete(protect, restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`), deleteTour);
 
 tourRouter
-  .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter)
+  .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter);

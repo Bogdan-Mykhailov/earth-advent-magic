@@ -3,6 +3,7 @@ import { Tour } from '../models/Tour.js';
 import { REVIEWS, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { createOne, deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
+import { AppError } from '../utils/error.js';
 
 export const aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -89,3 +90,25 @@ export const getOneTour = getOne(Tour, { path: REVIEWS });
 export const createTour = createOne(Tour);
 export const updateTour = updateOne(Tour);
 export const deleteTour = deleteOne(Tour);
+
+export const getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) {
+    const message = 'Please provide latitude and longitude in the format lat,lng.'
+    next(new AppError(message, 400));
+  }
+
+  const tours = await Tour.find({ startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } });
+
+  res.status(200).json({
+    status: STATUSES.SUCCESS,
+    result: tours.length,
+    data: {
+      data: tours
+    }
+  })
+});

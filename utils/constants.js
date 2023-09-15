@@ -21,7 +21,13 @@ export const TOURS_URL = {
   tourId: '/:tourId',
   year: '/:year',
   token: '/:token',
-  me: '/me'
+  me: '/me',
+  toursWithin: '/tours-within',
+  center: '/center',
+  unit: '/unit',
+  distance: '/:distance',
+  latLng: '/:latlng',
+  unitType: '/:unit'
 };
 
 export const ROLES = {
@@ -29,7 +35,7 @@ export const ROLES = {
   guide: 'guide',
   leadGuide: 'lead-guide',
   admin: 'admin'
-}
+};
 
 export const PUBLIC_PATH = './public';
 export const REVIEWS = 'reviews';
@@ -37,7 +43,7 @@ export const REVIEWS = 'reviews';
 export const STATUSES = {
   FAILED: 'failed',
   SUCCESS: 'success',
-  ERROR: 'error',
+  ERROR: 'error'
 };
 
 export const sendErrorDev = (err, res) => {
@@ -55,7 +61,7 @@ export const sendErrorProd = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
-      message: err.message,
+      message: err.message
     });
 
     // programing or other unknown error: don't leak error details
@@ -82,7 +88,7 @@ export const signToken = (id) => {
 export const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 *1000),
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true
   };
 
@@ -90,10 +96,10 @@ export const createSendToken = (user, statusCode, res) => {
     cookieOptions.secure = true;
   }
 
-  res.cookie('jwt', token, cookieOptions)
+  res.cookie('jwt', token, cookieOptions);
 
   // remove password from output
-  user.password = undefined
+  user.password = undefined;
 
   res.status(statusCode).json({
     status: STATUSES.SUCCESS,
@@ -110,7 +116,7 @@ export const filterObj = (obj, ...allowedFields) => {
     if (allowedFields.includes(el)) {
       newObj[el] = obj[el];
     }
-  })
+  });
 
   return newObj;
 };
