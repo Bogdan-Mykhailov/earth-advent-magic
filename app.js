@@ -15,6 +15,7 @@ import { reviewRouter } from './routes/Review.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { viewRouter } from './routes/View.js';
 
 export const app = express();
 
@@ -75,13 +76,7 @@ app.use((req, res, next) => {
 });
 
 // 3 routes
-app.get('/', (req, res) => {
-  res.status(200).render(BASE, {
-    tour: 'The Forest Hiker',
-    user: 'Bogdan'
-  });
-})
-
+app.use('/', viewRouter);
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.tours}`, tourRouter);
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.users}`, userRouter);
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.reviews}`, reviewRouter);

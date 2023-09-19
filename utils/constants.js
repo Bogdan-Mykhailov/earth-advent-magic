@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 export const TOURS_URL = {
   baseUrl: '/api/v1',
   api: '/api',
+  tour: '/tour',
   tours: '/tours',
   users: '/users',
   reviews: '/reviews',
@@ -28,7 +29,7 @@ export const TOURS_URL = {
   distance: '/:distance',
   distances: '/:distances',
   latLng: '/:latlng',
-  unitType: '/:unit'
+  unitType: '/:unit',
 };
 
 export const ROLES = {
