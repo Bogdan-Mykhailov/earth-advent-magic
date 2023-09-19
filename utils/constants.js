@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 export const TOURS_URL = {
   baseUrl: '/api/v1',
   api: '/api',
-  tour: '/tour',
   tours: '/tours',
+  tour: '/tour',
   users: '/users',
   reviews: '/reviews',
   topFiveCheap: '/top-5-cheap',
@@ -22,6 +22,7 @@ export const TOURS_URL = {
   tourId: '/:tourId',
   year: '/:year',
   token: '/:token',
+  slug: '/:slug',
   me: '/me',
   toursWithin: '/tours-within',
   center: '/center',
@@ -37,6 +38,12 @@ export const ROLES = {
   guide: 'guide',
   leadGuide: 'lead-guide',
   admin: 'admin'
+};
+
+export const FIELDS = {
+  user: 'user',
+  review: 'review',
+  rating: 'rating'
 };
 
 export const PUBLIC_PATH = 'public';

@@ -8,4 +8,4 @@ export const viewRouter = Router();
 
 viewRouter.get('/', getOverview);
 
-viewRouter.get(`${TOURS_URL.tour}`, getTour);
+viewRouter.get(`${TOURS_URL.tour}${TOURS_URL.slug}`, getTour);
