@@ -38,8 +38,10 @@ export const ROLES = {
   admin: 'admin'
 };
 
-export const PUBLIC_PATH = './public';
+export const PUBLIC_PATH = 'public';
+export const VIEWS_PATH = 'views';
 export const REVIEWS = 'reviews';
+export const BASE = 'base';
 
 export const STATUSES = {
   FAILED: 'failed',

@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { PUBLIC_PATH, TOURS_URL } from './utils/constants.js';
+import { BASE, PUBLIC_PATH, TOURS_URL, VIEWS_PATH } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
 import { AppError } from './utils/error.js';
@@ -12,10 +12,23 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import { reviewRouter } from './routes/Review.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 export const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, VIEWS_PATH));
+
 // 1 global middlewares
+// serving static files
+app.use(express.static(path.join(__dirname, PUBLIC_PATH)));
+// app.use(express.static(PUBLIC_PATH));
+
 // set security http headers
 app.use(helmet());
 
@@ -55,9 +68,6 @@ app.use(hpp({
   ]
 }));
 
-// serving static files
-app.use(express.static(PUBLIC_PATH));
-
 // test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -65,6 +75,13 @@ app.use((req, res, next) => {
 });
 
 // 3 routes
+app.get('/', (req, res) => {
+  res.status(200).render(BASE, {
+    tour: 'The Forest Hiker',
+    user: 'Bogdan'
+  });
+})
+
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.tours}`, tourRouter);
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.users}`, userRouter);
 app.use(`${TOURS_URL.baseUrl}${TOURS_URL.reviews}`, reviewRouter);
