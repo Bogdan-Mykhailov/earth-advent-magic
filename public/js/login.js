@@ -1,6 +1,9 @@
 'use strict';
+import axios from 'axios';
+import { showAlert } from './alerts.js';
+import { STATUSES } from '../../utils/constants.js';
 
-const login = async (email, password) => {
+export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
@@ -11,21 +14,13 @@ const login = async (email, password) => {
       }
     });
 
-    if (res.data.status === 'success') {
-      alert('Logged in successfully!')
+    if (res.data.status === STATUSES.SUCCESS) {
+      showAlert(STATUSES.SUCCESS, 'Logged in successfully!')
       window.setTimeout(() => {
         location.assign('/')
-      }, 1500)
+      }, 1000)
     }
   } catch (err) {
-    alert(err.response.data.message);
+    showAlert(STATUSES.ERROR, err.response.data.message);
   }
-
 };
-
-document.querySelector('.form').addEventListener('submit', (event) => {
-  event.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  login(email, password);
-});
