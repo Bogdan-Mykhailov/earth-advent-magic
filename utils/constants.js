@@ -1,8 +1,8 @@
 'use strict';
 import jwt from 'jsonwebtoken';
 
-export const TOURS_URL = {
-  baseUrl: '/api/v1',
+export const APP_PATH = {
+  mainEndpoint: '/api/v1',
   api: '/api',
   tours: '/tours',
   tour: '/tour',

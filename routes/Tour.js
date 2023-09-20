@@ -1,5 +1,5 @@
 'use strict';
-import { ROLES, TOURS_URL } from '../utils/constants.js';
+import { ROLES, APP_PATH } from '../utils/constants.js';
 import Router from 'express';
 import {
   aliasTopTours,
@@ -18,15 +18,15 @@ import { reviewRouter } from './Review.js';
 export const tourRouter = Router();
 
 tourRouter
-  .route(TOURS_URL.topFiveCheap)
+  .route(APP_PATH.topFiveCheap)
   .get(aliasTopTours, getAllTours);
 
 tourRouter
-  .route(TOURS_URL.tourStats)
+  .route(APP_PATH.tourStats)
   .get(getTourStats);
 
 tourRouter
-  .route(`${TOURS_URL.monthlyPlan}${TOURS_URL.year}`)
+  .route(`${APP_PATH.monthlyPlan}${APP_PATH.year}`)
   .get(
     protect,
     restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`, `${ROLES.guide}`),
@@ -35,11 +35,11 @@ tourRouter
 
 tourRouter
   .route(
-    `${TOURS_URL.toursWithin}${TOURS_URL.distance}${TOURS_URL.center}${TOURS_URL.latLng}${TOURS_URL.unit}${TOURS_URL.unitType}`)
+    `${APP_PATH.toursWithin}${APP_PATH.distance}${APP_PATH.center}${APP_PATH.latLng}${APP_PATH.unit}${APP_PATH.unitType}`)
   .get(getToursWithin);
 
 tourRouter
-  .route(`${TOURS_URL.distances}${TOURS_URL.latLng}${TOURS_URL.unit}${TOURS_URL.unitType}`)
+  .route(`${APP_PATH.distances}${APP_PATH.latLng}${APP_PATH.unit}${APP_PATH.unitType}`)
   .get(getDistances)
 
 tourRouter
@@ -52,7 +52,7 @@ tourRouter
   );
 
 tourRouter
-  .route(`${TOURS_URL.id}`)
+  .route(`${APP_PATH.id}`)
   .get(getOneTour)
   .patch(
     protect,
@@ -61,4 +61,4 @@ tourRouter
   .delete(protect, restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`), deleteTour);
 
 tourRouter
-  .use(`${TOURS_URL.tourId}${TOURS_URL.reviews}`, reviewRouter);
+  .use(`${APP_PATH.tourId}${APP_PATH.reviews}`, reviewRouter);

@@ -1,6 +1,6 @@
 'use strict';
 import Router from 'express';
-import { ROLES, TOURS_URL } from '../utils/constants.js';
+import { ROLES, APP_PATH } from '../utils/constants.js';
 import {
   createUser,
   deleteMe,
@@ -19,20 +19,20 @@ import {
 } from '../controllers/Auth.js';
 
 export const userRouter = Router();
-userRouter.post(`${TOURS_URL.signup}`, signup);
-userRouter.post(`${TOURS_URL.login}`, login);
+userRouter.post(`${APP_PATH.signup}`, signup);
+userRouter.post(`${APP_PATH.login}`, login);
 
-userRouter.post(`${TOURS_URL.forgotPassword}`, forgotPassword);
-userRouter.patch(`${TOURS_URL.resetPassword}${TOURS_URL.token}`, resetPassword);
+userRouter.post(`${APP_PATH.forgotPassword}`, forgotPassword);
+userRouter.patch(`${APP_PATH.resetPassword}${APP_PATH.token}`, resetPassword);
 
 // protect all rotes after this middleware
 userRouter.use(protect);
 
-userRouter.patch(`${TOURS_URL.updateMyPassword}`, updatePassword);
-userRouter.patch(`${TOURS_URL.updateMe}`, updateMe);
-userRouter.delete(`${TOURS_URL.deleteMe}`, deleteMe);
+userRouter.patch(`${APP_PATH.updateMyPassword}`, updatePassword);
+userRouter.patch(`${APP_PATH.updateMe}`, updateMe);
+userRouter.delete(`${APP_PATH.deleteMe}`, deleteMe);
 
-userRouter.get(`${TOURS_URL.me}`, getMe, getOneUser);
+userRouter.get(`${APP_PATH.me}`, getMe, getOneUser);
 
 userRouter.use(restrictTo(`${ROLES.admin}`));
 
@@ -42,7 +42,7 @@ userRouter
   .post(createUser);
 
 userRouter
-  .route(`${TOURS_URL.id}`)
+  .route(`${APP_PATH.id}`)
   .get(getOneUser)
   .patch(updateUser)
   .delete(deleteUser);

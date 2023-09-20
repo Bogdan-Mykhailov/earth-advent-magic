@@ -1,6 +1,6 @@
 'use strict';
 import express from 'express';
-import { ROLES, TOURS_URL } from '../utils/constants.js';
+import { ROLES, APP_PATH } from '../utils/constants.js';
 import {
   createReview,
   deleteReview,
@@ -24,7 +24,7 @@ reviewRouter
     createReview);
 
 reviewRouter
-  .route(`${TOURS_URL.id}`)
+  .route(`${APP_PATH.id}`)
   .get(getOneReview)
   .patch(restrictTo(`${ROLES.user}`, `${ROLES.admin}`), updateReview)
   .delete(restrictTo(`${ROLES.user}`, `${ROLES.admin}`), deleteReview);

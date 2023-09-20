@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { BASE, PUBLIC_PATH, TOURS_URL, VIEWS_PATH } from './utils/constants.js';
+import { BASE, PUBLIC_PATH, APP_PATH, VIEWS_PATH } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
 import { AppError } from './utils/error.js';
@@ -16,6 +16,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { viewRouter } from './routes/View.js';
+import cookieParser from 'cookie-parser';
 
 export const app = express();
 
@@ -44,12 +45,14 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'To many requests from this IP, please try again in an hour!'
 });
-app.use(`${TOURS_URL.api}`, limiter);
+app.use(`${APP_PATH.api}`, limiter);
 
 // body parser, reading data from the body into req.body
 app.use(express.json({
   limit: '10kb'
 }));
+
+app.use(cookieParser());
 
 // data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -72,14 +75,15 @@ app.use(hpp({
 // test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  console.log(req.cookies);
   next();
 });
 
 // 3 routes
 app.use('/', viewRouter);
-app.use(`${TOURS_URL.baseUrl}${TOURS_URL.tours}`, tourRouter);
-app.use(`${TOURS_URL.baseUrl}${TOURS_URL.users}`, userRouter);
-app.use(`${TOURS_URL.baseUrl}${TOURS_URL.reviews}`, reviewRouter);
+app.use(`${APP_PATH.mainEndpoint}${APP_PATH.tours}`, tourRouter);
+app.use(`${APP_PATH.mainEndpoint}${APP_PATH.users}`, userRouter);
+app.use(`${APP_PATH.mainEndpoint}${APP_PATH.reviews}`, reviewRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(
