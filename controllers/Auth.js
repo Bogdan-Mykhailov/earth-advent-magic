@@ -1,6 +1,6 @@
 'use strict';
 import { User } from '../models/User.js';
-import { createSendToken, signToken, STATUSES } from '../utils/constants.js';
+import { createSendToken, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { promisify } from 'util';
@@ -48,7 +48,7 @@ export const protect = catchAsync(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
-    token = req.cookies.jwt
+    token = req.cookies.jwt;
   }
 
   if (!token) {
@@ -73,6 +73,28 @@ export const protect = catchAsync(async (req, res, next) => {
   }
   //grand access to protected route
   req.user = currentUser;
+  next();
+});
+
+// only for rendered pages, no error
+export const isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // verify token
+    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+    // check if user still exist
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return next();
+    }
+    // check if user change pass after the token was issued
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+    //there is a logged-in user
+    res.locals.user = currentUser;
+    return next();
+  }
   next();
 });
 
@@ -118,8 +140,8 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
-    const message = 'There was an error sending the email. Try again later!'
-    return next(new AppError(message, 500))
+    const message = 'There was an error sending the email. Try again later!';
+    return next(new AppError(message, 500));
   }
 });
 
@@ -155,7 +177,7 @@ export const updatePassword = catchAsync(async (req, res, next) => {
   // check if POSTed current password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
 
-    const message = 'Your current password is wrong.'
+    const message = 'Your current password is wrong.';
     return next(new AppError(message, 401));
   }
   // if so, update password
