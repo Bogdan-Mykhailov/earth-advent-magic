@@ -12,6 +12,7 @@ export const APP_PATH = {
   tourStats: '/tour-stats',
   signup: '/signup',
   login: '/login',
+  logout: '/logout',
   forgotPassword: '/forgotPassword',
   resetPassword: '/resetPassword',
   updateMyPassword: '/updateMyPassword',

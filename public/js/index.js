@@ -1,11 +1,12 @@
 'use strict';
 import '@babel/polyfill';
-import { login } from './login.js';
+import { login, logout } from './login.js';
 import { displayMap } from './mapbox.js';
 
 // dom elements
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form');
+const logOut = document.querySelector('.nav__el--logout');
 
 //delegation
 if (mapBox) {
@@ -20,5 +21,9 @@ if (loginForm) {
     const password = document.getElementById('password').value;
     login(email, password);
   });
+}
+
+if (logOut) {
+  logOut.addEventListener('click', logout);
 }
 

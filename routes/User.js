@@ -12,7 +12,7 @@ import {
 } from '../controllers/User.js';
 import {
   forgotPassword,
-  login, protect,
+  login, logout, protect,
   resetPassword, restrictTo,
   signup,
   updatePassword
@@ -21,6 +21,7 @@ import {
 export const userRouter = Router();
 userRouter.post(`${APP_PATH.signup}`, signup);
 userRouter.post(`${APP_PATH.login}`, login);
+userRouter.get(`${APP_PATH.logout}`, logout);
 
 userRouter.post(`${APP_PATH.forgotPassword}`, forgotPassword);
 userRouter.patch(`${APP_PATH.resetPassword}${APP_PATH.token}`, resetPassword);
