@@ -83,6 +83,7 @@ export const protect = catchAsync(async (req, res, next) => {
   }
   //grand access to protected route
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
@@ -136,7 +137,8 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   // send it to user's email
   const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a PATCH request with new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+  const message = `Forgot your password? Submit a PATCH request with new password and passwordConfirm to: ${resetURL}.
+  \nIf you didn't forget your password, please ignore this email!`;
 
   try {
     await sendEmail({

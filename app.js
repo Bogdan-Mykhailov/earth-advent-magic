@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { BASE, PUBLIC_PATH, APP_PATH, VIEWS_PATH, ENV_MODE } from './utils/constants.js';
+import { PUBLIC_PATH, APP_PATH, VIEWS_PATH, ENV_MODE } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
 import { AppError } from './utils/error.js';
