@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import morgan from 'morgan';
-import { BASE, PUBLIC_PATH, APP_PATH, VIEWS_PATH } from './utils/constants.js';
+import { BASE, PUBLIC_PATH, APP_PATH, VIEWS_PATH, ENV_MODE } from './utils/constants.js';
 import { tourRouter } from './routes/Tour.js';
 import { userRouter } from './routes/User.js';
 import { AppError } from './utils/error.js';
@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, PUBLIC_PATH)));
 app.use(helmet());
 
 // development logging
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === `${ENV_MODE.DEV}`) {
   app.use(morgan('dev'));
 }
 

@@ -32,10 +32,9 @@ export const logout = async () => {
       url: 'http://localhost:8080/api/v1/users/logout',
     });
     if (res.data.status === STATUSES.SUCCESS) {
-      location.reload(true);
+      location.assign('/login');
     }
   } catch (err) {
-    console.log(err.response);
     showAlert(STATUSES.ERROR, 'Error logging out! Try again.')
   }
 }

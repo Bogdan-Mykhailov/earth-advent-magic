@@ -65778,9 +65778,14 @@ module.exports = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signToken = exports.sendErrorProd = exports.sendErrorDev = exports.filterObj = exports.createSendToken = exports.VIEWS_PATH = exports.STATUSES = exports.ROLES = exports.REVIEWS = exports.PUBLIC_PATH = exports.FIELDS = exports.BASE = exports.APP_PATH = void 0;
+exports.signToken = exports.filterObj = exports.createSendToken = exports.VIEWS_PATH = exports.STATUSES = exports.ROLES = exports.REVIEWS = exports.PUBLIC_PATH = exports.FIELDS = exports.ENV_MODE = exports.BASE = exports.APP_PATH = void 0;
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var ENV_MODE = {
+  DEV: 'development',
+  PROD: 'production'
+};
+exports.ENV_MODE = ENV_MODE;
 var APP_PATH = {
   mainEndpoint: '/api/v1',
   api: '/api',
@@ -65841,37 +65846,6 @@ var STATUSES = {
   ERROR: 'error'
 };
 exports.STATUSES = STATUSES;
-var sendErrorDev = function sendErrorDev(err, res) {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
-  });
-};
-exports.sendErrorDev = sendErrorDev;
-var sendErrorProd = function sendErrorProd(err, res) {
-  // operational, trusted error: send message to client
-
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message
-    });
-
-    // programing or other unknown error: don't leak error details
-  } else {
-    // 1. log error
-    console.log('error', err);
-
-    // 2. send generic message
-    res.status(500).json({
-      status: STATUSES.ERROR,
-      message: 'Something went wrong!'
-    });
-  }
-};
-exports.sendErrorProd = sendErrorProd;
 var signToken = function signToken(id) {
   return _jsonwebtoken.default.sign({
     id: id
@@ -65886,7 +65860,7 @@ var createSendToken = function createSendToken(user, statusCode, res) {
     expires: new Date(Date.now() + undefined * 24 * 60 * 60 * 1000),
     httpOnly: true
   };
-  if ("development" === 'production') {
+  if ("development" === ENV_MODE.PROD) {
     cookieOptions.secure = true;
   }
   res.cookie('jwt', token, cookieOptions);
@@ -65986,16 +65960,15 @@ var logout = /*#__PURE__*/function () {
         case 3:
           res = _context2.sent;
           if (res.data.status === _constants.STATUSES.SUCCESS) {
-            location.reload(true);
+            location.assign('/login');
           }
-          _context2.next = 11;
+          _context2.next = 10;
           break;
         case 7:
           _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0.response);
           (0, _alerts.showAlert)(_constants.STATUSES.ERROR, 'Error logging out! Try again.');
-        case 11:
+        case 10:
         case "end":
           return _context2.stop();
       }
