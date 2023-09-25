@@ -21,6 +21,7 @@ export const APP_PATH = {
   forgotPassword: '/forgotPassword',
   resetPassword: '/resetPassword',
   updateMyPassword: '/updateMyPassword',
+  submitUserData: '/submit-user-data',
   updateMe: '/updateMe',
   deleteMe: '/deleteMe',
   monthlyPlan: '/monthly-plan',

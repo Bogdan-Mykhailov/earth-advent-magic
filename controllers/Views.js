@@ -3,6 +3,7 @@ import { catchAsync } from '../utils/catchAsync.js';
 import { Tour } from '../models/Tour.js';
 import { FIELDS, REVIEWS } from '../utils/constants.js';
 import { AppError } from '../utils/error.js';
+import { User } from '../models/User.js';
 
 export const getOverview = catchAsync(async (req, res, next) => {
   // 1 get tour data from collection
@@ -24,9 +25,9 @@ export const getTour = catchAsync(async (req, res, next) => {
       fields: `${FIELDS.rating} ${FIELDS.review} ${FIELDS.user}`
     });
 
-  if(!tour) {
+  if (!tour) {
     const message = 'There is no tour with that name.';
-    return next(new AppError(message, 404))
+    return next(new AppError(message, 404));
   }
 
   // 2 build template
