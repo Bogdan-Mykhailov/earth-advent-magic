@@ -9,8 +9,8 @@ import {
   getMonthlyPlan,
   getOneTour,
   getTourStats,
-  getToursWithin,
-  updateTour
+  getToursWithin, resizeTourImg,
+  updateTour, uploadTourImages
 } from '../controllers/Tour.js';
 import { protect, restrictTo } from '../controllers/Auth.js';
 import { reviewRouter } from './Review.js';
@@ -57,8 +57,14 @@ tourRouter
   .patch(
     protect,
     restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`),
+    uploadTourImages,
+    resizeTourImg,
     updateTour)
-  .delete(protect, restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`), deleteTour);
+  .delete(
+    protect,
+    restrictTo(`${ROLES.admin}`, `${ROLES.leadGuide}`),
+    deleteTour
+  );
 
 tourRouter
   .use(`${APP_PATH.tourId}${APP_PATH.reviews}`, reviewRouter);

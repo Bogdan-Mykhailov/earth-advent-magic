@@ -1,9 +1,64 @@
 'use strict';
 import { Tour } from '../models/Tour.js';
-import { REVIEWS, STATUSES } from '../utils/constants.js';
+import { REVIEWS, STATUSES, TOURS_IMG_DIRECTORY } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { createOne, deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
 import { AppError } from '../utils/error.js';
+import multer from 'multer';
+import sharp from 'sharp';
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, callback) => {
+  if (file.mimetype.startsWith('image')) {
+    callback(null, true);
+  } else {
+    const message = 'Not an image! Please upload only images.';
+    callback(new AppError(message, 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+export const uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 }
+]);
+
+export const resizeTourImg = catchAsync(async (req, res, next) => {
+  if (!req.files.imageCover || !req.files.images) {
+    return next();
+  }
+
+  // covet image
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`${TOURS_IMG_DIRECTORY}/${req.body.imageCover}`);
+
+  // images
+  req.body.images = [];
+
+  await Promise.all(req.files.images.map(async (file, i) => {
+      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`${TOURS_IMG_DIRECTORY}/${filename}`);
+
+      req.body.images.push(filename);
+    })
+  );
+
+  next();
+});
 
 export const aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -98,7 +153,7 @@ export const getToursWithin = catchAsync(async (req, res, next) => {
   const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
 
   if (!lat || !lng) {
-    const message = 'Please provide latitude and longitude in the format lat,lng.'
+    const message = 'Please provide latitude and longitude in the format lat,lng.';
     next(new AppError(message, 400));
   }
 
@@ -110,7 +165,7 @@ export const getToursWithin = catchAsync(async (req, res, next) => {
     data: {
       data: tours
     }
-  })
+  });
 });
 
 export const getDistances = catchAsync(async (req, res, next) => {
@@ -120,7 +175,7 @@ export const getDistances = catchAsync(async (req, res, next) => {
   const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
 
   if (!lat || !lng) {
-    const message = 'Please provide latitude and longitude in the format lat,lng.'
+    const message = 'Please provide latitude and longitude in the format lat,lng.';
     next(new AppError(message, 400));
   }
 

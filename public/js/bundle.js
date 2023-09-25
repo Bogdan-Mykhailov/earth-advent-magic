@@ -65778,7 +65778,7 @@ module.exports = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signToken = exports.filterObj = exports.createSendToken = exports.VIEWS_PATH = exports.USERS_IMG_DIRECTORY = exports.STATUSES = exports.ROLES = exports.REVIEWS = exports.PUBLIC_PATH = exports.PHOTO = exports.FIELDS = exports.ENV_MODE = exports.BASE = exports.APP_PATH = void 0;
+exports.signToken = exports.filterObj = exports.createSendToken = exports.VIEWS_PATH = exports.USERS_IMG_DIRECTORY = exports.TOURS_IMG_DIRECTORY = exports.STATUSES = exports.ROLES = exports.REVIEWS = exports.PUBLIC_PATH = exports.PHOTO = exports.FIELDS = exports.ENV_MODE = exports.BASE = exports.APP_PATH = void 0;
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var ENV_MODE = {
@@ -65845,6 +65845,8 @@ var PHOTO = 'photo';
 exports.PHOTO = PHOTO;
 var USERS_IMG_DIRECTORY = 'public/img/users';
 exports.USERS_IMG_DIRECTORY = USERS_IMG_DIRECTORY;
+var TOURS_IMG_DIRECTORY = 'public/img/tours';
+exports.TOURS_IMG_DIRECTORY = TOURS_IMG_DIRECTORY;
 var STATUSES = {
   FAILED: 'failed',
   SUCCESS: 'success',

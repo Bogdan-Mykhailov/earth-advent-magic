@@ -4,8 +4,8 @@ import { User } from '../models/User.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
-import multer from 'multer';
 import sharp from 'sharp';
+import multer from 'multer';
 
 const multerStorage = multer.memoryStorage();
 
@@ -25,22 +25,22 @@ const upload = multer({
 
 export const uploadUserPhoto = upload.single(PHOTO);
 
-export const resizeUserPhoto = (req, res, next) => {
+export const resizeUserPhoto = catchAsync(async (req, res, next) => {
 
   if (!req.file) {
     return next();
   }
 
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  sharp(req.file.buffer)
+  await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
     .toFile(`${USERS_IMG_DIRECTORY}/${req.file.filename}`);
 
   next();
-};
+});
 
 export const getMe = (req, res, next) => {
   req.params.id = req.user.id;

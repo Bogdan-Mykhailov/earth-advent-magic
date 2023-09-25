@@ -60,6 +60,7 @@ export const BASE = 'base';
 export const PHOTO = 'photo';
 
 export const USERS_IMG_DIRECTORY = 'public/img/users';
+export const TOURS_IMG_DIRECTORY = 'public/img/tours';
 
 export const STATUSES = {
   FAILED: 'failed',
