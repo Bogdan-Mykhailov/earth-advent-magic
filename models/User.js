@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: [validator.isEmail, 'Please provide a valid email address']
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: 'default.jpg'
+  },
   role: {
     type: String,
     enum: [`${ROLES.admin}`, `${ROLES.leadGuide}`, `${ROLES.guide}`, `${ROLES.user}`],
@@ -73,7 +76,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.pre(/^find/, function(next) {
   // this points to the current query
-  this.find({ active: { $ne: false }});
+  this.find({ active: { $ne: false } });
   next();
 });
 
@@ -103,9 +106,9 @@ userSchema.methods.createPassResetToken = function() {
     .update(resetToken)
     .digest('hex');
 
-  console.log({resetToken}, this.passwordResetToken);
+  console.log({ resetToken }, this.passwordResetToken);
 
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };
