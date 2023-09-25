@@ -5,16 +5,9 @@ import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { deleteOne, getAll, getOne, updateOne } from './handlerFactory.js';
 import multer from 'multer';
+import sharp from 'sharp';
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, USERS_IMG_DIRECTORY);
-  },
-  filename: (req, file, callback) => {
-    const extension = file.mimetype.split('/')[1];
-    callback(null, `user-${req.user.id}-${Date.now()}.${extension}`)
-  }
-});
+const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, callback) => {
   if (file.mimetype.startsWith('image')) {
@@ -31,6 +24,23 @@ const upload = multer({
 });
 
 export const uploadUserPhoto = upload.single(PHOTO);
+
+export const resizeUserPhoto = (req, res, next) => {
+
+  if (!req.file) {
+    return next();
+  }
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
+
+  sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`${USERS_IMG_DIRECTORY}/${req.file.filename}`);
+
+  next();
+};
 
 export const getMe = (req, res, next) => {
   req.params.id = req.user.id;

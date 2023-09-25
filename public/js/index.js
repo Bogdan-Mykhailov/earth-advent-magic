@@ -10,6 +10,7 @@ const loginForm = document.querySelector('.form--login');
 const logOut = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const fileInput = document.querySelector('.form__upload');
 
 //delegation
 if (mapBox) {
@@ -31,11 +32,14 @@ if (logOut) {
 }
 
 if (userDataForm) {
-  userDataForm.addEventListener('submit', (event) => {
+  userDataForm.addEventListener('submit',  (event) => {
     event.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    updateSettings({ name, email }, 'data');
+
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+
+    updateSettings(form, 'data');
   });
 }
 
@@ -57,5 +61,24 @@ if (userPasswordForm) {
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
+  });
+}
+
+if (fileInput) {
+  fileInput.addEventListener('change', async (event) => {
+    event.preventDefault();
+    const form = new FormData();
+    form.append('photo', document.getElementById('photo').files[0]);
+
+    const newImage = await updateSettings(form, 'photo');
+
+    if (newImage) {
+      document
+        .querySelector('.nav__user-img')
+        .setAttribute('src', `/img/users/${newImage}`);
+      document
+        .querySelector('.form__user-photo')
+        .setAttribute('src', `/img/users/${newImage}`);
+    }
   });
 }

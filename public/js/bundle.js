@@ -66056,20 +66056,28 @@ var updateSettings = /*#__PURE__*/function () {
           });
         case 4:
           res = _context.sent;
-          if (res.data.status === _constants.STATUSES.SUCCESS) {
-            (0, _alerts.showAlert)(_constants.STATUSES.SUCCESS, "".concat(type.toUpperCase(), " updated successfully!"));
+          if (!(res.data.status === _constants.STATUSES.SUCCESS)) {
+            _context.next = 9;
+            break;
           }
-          _context.next = 11;
+          (0, _alerts.showAlert)(_constants.STATUSES.SUCCESS, "".concat(type === 'password' ? 'Password updated successfully!' : 'Data updated successfully!'));
+          if (!(type === 'photo')) {
+            _context.next = 9;
+            break;
+          }
+          return _context.abrupt("return", res.data.data.user.photo);
+        case 9:
+          _context.next = 14;
           break;
-        case 8:
-          _context.prev = 8;
+        case 11:
+          _context.prev = 11;
           _context.t0 = _context["catch"](1);
           (0, _alerts.showAlert)(_constants.STATUSES.ERROR, _context.t0.response.data.message);
-        case 11:
+        case 14:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 8]]);
+    }, _callee, null, [[1, 11]]);
   }));
   return function updateSettings(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -66222,6 +66230,7 @@ var loginForm = document.querySelector('.form--login');
 var logOut = document.querySelector('.nav__el--logout');
 var userDataForm = document.querySelector('.form-user-data');
 var userPasswordForm = document.querySelector('.form-user-password');
+var fileInput = document.querySelector('.form__upload');
 
 //delegation
 if (mapBox) {
@@ -66242,12 +66251,10 @@ if (logOut) {
 if (userDataForm) {
   userDataForm.addEventListener('submit', function (event) {
     event.preventDefault();
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    (0, _updateSettings.updateSettings)({
-      name: name,
-      email: email
-    }, 'data');
+    var form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    (0, _updateSettings.updateSettings)(form, 'data');
   });
 }
 if (userPasswordForm) {
@@ -66281,6 +66288,35 @@ if (userPasswordForm) {
     }));
     return function (_x) {
       return _ref.apply(this, arguments);
+    };
+  }());
+}
+if (fileInput) {
+  fileInput.addEventListener('change', /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(event) {
+      var form, newImage;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            event.preventDefault();
+            form = new FormData();
+            form.append('photo', document.getElementById('photo').files[0]);
+            _context2.next = 5;
+            return (0, _updateSettings.updateSettings)(form, 'photo');
+          case 5:
+            newImage = _context2.sent;
+            if (newImage) {
+              document.querySelector('.nav__user-img').setAttribute('src', "/img/users/".concat(newImage));
+              document.querySelector('.form__user-photo').setAttribute('src', "/img/users/".concat(newImage));
+            }
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function (_x2) {
+      return _ref2.apply(this, arguments);
     };
   }());
 }
