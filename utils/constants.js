@@ -57,6 +57,9 @@ export const PUBLIC_PATH = 'public';
 export const VIEWS_PATH = 'views';
 export const REVIEWS = 'reviews';
 export const BASE = 'base';
+export const PHOTO = 'photo';
+
+export const USERS_IMG_DIRECTORY = 'public/img/users';
 
 export const STATUSES = {
   FAILED: 'failed',

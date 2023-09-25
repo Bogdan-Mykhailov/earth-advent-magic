@@ -1,6 +1,6 @@
 'use strict';
 import Router from 'express';
-import { ROLES, APP_PATH } from '../utils/constants.js';
+import { ROLES, APP_PATH, PHOTO } from '../utils/constants.js';
 import {
   createUser,
   deleteMe,
@@ -8,7 +8,7 @@ import {
   getAllUsers, getMe,
   getOneUser,
   updateMe,
-  updateUser
+  updateUser, uploadUserPhoto
 } from '../controllers/User.js';
 import {
   forgotPassword,
@@ -17,6 +17,7 @@ import {
   signup,
   updatePassword
 } from '../controllers/Auth.js';
+import multer from 'multer';
 
 export const userRouter = Router();
 userRouter.post(`${APP_PATH.signup}`, signup);
@@ -30,10 +31,9 @@ userRouter.patch(`${APP_PATH.resetPassword}${APP_PATH.token}`, resetPassword);
 userRouter.use(protect);
 
 userRouter.patch(`${APP_PATH.updateMyPassword}`, updatePassword);
-userRouter.patch(`${APP_PATH.updateMe}`, updateMe);
-userRouter.delete(`${APP_PATH.deleteMe}`, deleteMe);
-
 userRouter.get(`${APP_PATH.me}`, getMe, getOneUser);
+userRouter.patch(`${APP_PATH.updateMe}`, uploadUserPhoto, updateMe);
+userRouter.delete(`${APP_PATH.deleteMe}`, deleteMe);
 
 userRouter.use(restrictTo(`${ROLES.admin}`));
 
