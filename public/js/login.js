@@ -37,4 +37,4 @@ export const logout = async () => {
   } catch (err) {
     showAlert(STATUSES.ERROR, 'Error logging out! Try again.')
   }
-}
+};
