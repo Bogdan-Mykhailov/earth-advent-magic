@@ -17,7 +17,14 @@ export class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === ENV_MODE.PROD) {
-      return 1
+      return nodemailer.createTransport({
+        host: process.env.BREVO_HOST,
+        port: process.env.BREVO_PORT,
+        auth: {
+          user: process.env.BREVO_LOGIN,
+          pass: process.env.BREVO_PASSWORD
+        }
+      })
     }
 
     return nodemailer.createTransport({
@@ -57,5 +64,12 @@ export class Email {
 
   async sendWelcome() {
     await this.send('Welcome', 'Welcome to the Earth Adventurers family!')
+  }
+
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for only 10 minutes)'
+    );
   }
 }
