@@ -1,25 +1,61 @@
 'use strict';
 
 import nodemailer from 'nodemailer';
+import { ENV_MODE } from './constants.js';
+import pug from 'pug';
+import { convert } from 'html-to-text';
+import  path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-export const sendEmail = async (options) => {
-  // create a transporter
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD
+export class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Bogdan Mykhailov <${process.env.EMAIL_FROM}>`;
+  }
+
+  newTransport() {
+    if (process.env.NODE_ENV === ENV_MODE.PROD) {
+      return 1
     }
-  });
-  // define the email options
-  const mailOptions = {
-    from: 'Bogdan Mykhailov <bogdan_mykhailov@icloud.com>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-    // html:
-  };
-  // actually send the email
-  await transporter.sendMail(mailOptions);
+
+    return nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
+  }
+
+  async send(template, subject) {
+    // send the actual email
+    // 1 render html based on a pug template
+    const currentFile = fileURLToPath(import.meta.url);
+    const templatePath = path.join(dirname(currentFile), `/../views/email/${template}.pug`);
+    const html = pug.renderFile(templatePath, {
+      firstName: this.firstName,
+      url: this.url,
+      subject
+    });
+
+    // 2 define the email options
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      text: convert(html),
+      // text: htmlToText.fromString(html),
+      html
+    };
+
+    // 3 create a transport and send email
+    await this.newTransport().sendMail(mailOptions)
+  }
+
+  async sendWelcome() {
+    await this.send('Welcome', 'Welcome to the Earth Adventurers family!')
+  }
 }

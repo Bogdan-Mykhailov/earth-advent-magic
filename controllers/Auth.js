@@ -1,11 +1,11 @@
 'use strict';
 import { User } from '../models/User.js';
-import { createSendToken, STATUSES } from '../utils/constants.js';
+import { createSendToken, ENV_MODE, STATUSES } from '../utils/constants.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/error.js';
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
-import { sendEmail } from '../utils/email.js';
+import { Email } from '../utils/email.js';
 import crypto from 'crypto';
 
 export const signup = catchAsync(async (req, res, next) => {
@@ -19,6 +19,13 @@ export const signup = catchAsync(async (req, res, next) => {
     role: req.body.role,
     active: req.body.active
   });
+  const url = `${req.protocol}://${req.get('host')}/me`
+
+  // let url = `${req.protocol}://localhost:8080/me`
+  // if (process.env.NODE_ENV === ENV_MODE.PROD) {
+  //   url = `${req.protocol}://${req.get('host')}/me`
+  // }
+  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, res);
 });
@@ -141,11 +148,11 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   \nIf you didn't forget your password, please ignore this email!`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Your password reset token (valid for 10 min)',
-      message
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'Your password reset token (valid for 10 min)',
+    //   message
+    // });
 
     res.status(200).json({
       status: STATUSES.SUCCESS,
