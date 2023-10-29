@@ -65793,6 +65793,7 @@ var APP_PATH = {
   tour: '/tour',
   users: '/users',
   reviews: '/reviews',
+  bookings: '/bookings',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
   signup: '/signup',
@@ -65805,6 +65806,7 @@ var APP_PATH = {
   updateMe: '/updateMe',
   deleteMe: '/deleteMe',
   monthlyPlan: '/monthly-plan',
+  checkoutSession: '/checkout-session',
   id: '/:id',
   tourId: '/:tourId',
   year: '/:year',
@@ -66347,7 +66349,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49885" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55105" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

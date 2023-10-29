@@ -13,6 +13,7 @@ export const APP_PATH = {
   tour: '/tour',
   users: '/users',
   reviews: '/reviews',
+  bookings: '/bookings',
   topFiveCheap: '/top-5-cheap',
   tourStats: '/tour-stats',
   signup: '/signup',
@@ -25,6 +26,7 @@ export const APP_PATH = {
   updateMe: '/updateMe',
   deleteMe: '/deleteMe',
   monthlyPlan: '/monthly-plan',
+  checkoutSession: '/checkout-session',
   id: '/:id',
   tourId: '/:tourId',
   year: '/:year',
@@ -37,7 +39,7 @@ export const APP_PATH = {
   distance: '/:distance',
   distances: '/:distances',
   latLng: '/:latlng',
-  unitType: '/:unit',
+  unitType: '/:unit'
 };
 
 export const ROLES = {

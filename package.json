@@ -14,6 +14,7 @@
   "author": "Bogdan Mykhailov bogdan_mykhailov@icloud.com",
   "license": "ISC",
   "dependencies": {
+    "7": "^0.0.1",
     "@babel/polyfill": "^7.12.1",
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
@@ -37,6 +38,7 @@
     "pug": "^3.0.2",
     "sharp": "^0.32.6",
     "slugify": "^1.6.6",
+    "stripe": "^14.2.0",
     "validator": "^13.11.0",
     "xss-clean": "^0.1.4"
   }

@@ -2,8 +2,6 @@
 import express from 'express';
 import morgan from 'morgan';
 import { PUBLIC_PATH, APP_PATH, VIEWS_PATH, ENV_MODE } from './utils/constants.js';
-import { tourRouter } from './routes/Tour.js';
-import { userRouter } from './routes/User.js';
 import { AppError } from './utils/error.js';
 import { globalErrorHandler } from './controllers/Error.js';
 import rateLimit from 'express-rate-limit';
@@ -11,7 +9,10 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import { tourRouter } from './routes/Tour.js';
+import { userRouter } from './routes/User.js';
 import { reviewRouter } from './routes/Review.js';
+import { bookingRouter } from './routes/Booking.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -84,6 +85,7 @@ app.use('/', viewRouter);
 app.use(`${APP_PATH.mainEndpoint}${APP_PATH.tours}`, tourRouter);
 app.use(`${APP_PATH.mainEndpoint}${APP_PATH.users}`, userRouter);
 app.use(`${APP_PATH.mainEndpoint}${APP_PATH.reviews}`, reviewRouter);
+app.use(`${APP_PATH.mainEndpoint}${APP_PATH.bookings}`, bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(
