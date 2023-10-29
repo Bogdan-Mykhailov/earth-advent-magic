@@ -1,3 +1,4 @@
+'use strict';
 import { Tour } from '../models/Tour.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { Stripe } from 'stripe';
@@ -21,7 +22,7 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
         quantity: 1,
         price_data: {
           currency: 'usd',
-          unit_amount: tour.price,
+          unit_amount: tour.price * 100,
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,

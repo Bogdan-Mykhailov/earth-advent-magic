@@ -7,7 +7,6 @@ import { getCheckoutSession } from '../controllers/Booking.js';
 export const bookingRouter = express.Router();
 
 bookingRouter.get(
-  // `${APP_PATH.checkoutSession}${APP_PATH.tourId}`,
-  `/checkout-session/:tourId`,
+  `${APP_PATH.checkoutSession}${APP_PATH.tourId}`,
   protect,
   getCheckoutSession)

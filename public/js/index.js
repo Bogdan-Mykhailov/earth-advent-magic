@@ -3,6 +3,7 @@ import '@babel/polyfill';
 import { login, logout } from './login.js';
 import { displayMap } from './mapbox.js';
 import { updateSettings } from './updateSettings.js';
+import { bookTour } from './stripe.js';
 
 // dom elements
 const mapBox = document.getElementById('map');
@@ -11,6 +12,7 @@ const logOut = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const fileInput = document.querySelector('.form__upload');
+const bookBtn = document.getElementById('book-tour');
 
 //delegation
 if (mapBox) {
@@ -81,4 +83,12 @@ if (fileInput) {
         .setAttribute('src', `/img/users/${newImage}`);
     }
   });
+}
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', (event) => {
+    event.target.textContent = 'Processing...'
+    const { tourId } = event.target.dataset;
+    bookTour(tourId)
+  })
 }
